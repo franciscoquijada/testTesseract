@@ -2,7 +2,7 @@ const express = require('express');
 
 const multer = require('multer')
 
-const tesseract = require("node-tesseract-ocr");
+const tesseract = require('node-tesseract-ocr');
 
 const path = require('path')
 
@@ -10,16 +10,16 @@ const app = express()
 
 app.use(express.static(path.join(__dirname + '/uploads')))
 
-app.set('view engine', "ejs")
+app.set('view engine', 'ejs')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "uploads");
+        cb(null, 'uploads');
     },
     filename: function (req, file, cb) {
         cb(
             null,
-            file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+            file.fieldname + '-' + Date.now() + path.extname(file.originalname)
         );
     },
 });
@@ -34,7 +34,7 @@ app.post('/extracttextfromimage', upload.single('file'), (req, res) => {
     console.log(req.file.path)
 
     const config = {
-        lang: "eng",
+        lang: 'eng',
         oem: 1,
         psm: 3,
     };
@@ -42,7 +42,7 @@ app.post('/extracttextfromimage', upload.single('file'), (req, res) => {
     tesseract
         .recognize(req.file.path, config)
         .then((text) => {
-            console.log("Result:", text);
+            console.log('Result:', text);
 
             res.render('index',{data:text})
         })
@@ -51,7 +51,7 @@ app.post('/extracttextfromimage', upload.single('file'), (req, res) => {
         });
 })
 
-
-app.listen(5000, () => {
-    console.log("port 5000")
+const port = 5000;
+app.listen(port, () => {
+    console.log(`port ${port} listening`)
 })
